@@ -1,6 +1,6 @@
-from fastapi import APIRouter, status, Response
+from fastapi import APIRouter, status, Response, Query, Body, Path
 from enum import Enum
-from typing import Optional
+from typing import Optional, List, Dict
 from pydantic import BaseModel
 
 router = APIRouter(prefix='/blog', tags=['blog'])
@@ -59,10 +59,18 @@ async def get_blog(id: int, response: Response):
         return {'message': f'Blog with id: {id}'}
 
 
+class Image(BaseModel):
+    url: str
+    alias: str
+
+
 class BlogModel(BaseModel):
     title: str
     content: str
     published: Optional[bool]
+    tags: List[str] = []
+    metadata: Dict[str, str] = {'key1': 'value1'}
+    image: Optional[Image] = None
 
 # asi podemos pasar los tres tipos de parametros, body, path y query en sus respectivos ordenes,
 
@@ -73,4 +81,34 @@ def create_blog(blog_details: BlogModel, id: int, version: int = 1):
         'id': id,
         'data': blog_details,
         'version': version
+    }
+
+
+# query metadata
+
+@router.post('/{id}/comment/{comment_id}')
+async def create_comment(blog_detail: BlogModel,
+                         id: int,
+                         comment_title: str = Query(None,
+                                                    title='Titulo del comentario',
+                                                    description='random description para el Titulo',
+                                                    alias='commentTitle',  # Muy bueno para cambiar la forma en la que se envia en el query,
+                                                    deprecated=True
+                                                    ),
+                         #  content: str = Body('Hola que tal') de esta forma se genera opcional el body content,
+                         content: str = Body(...,
+                                             min_length=10,
+                                             max_length=20,
+                                             regex='^[a-z\s]*$'),  # validadores basicos, usando Ellipsis, lo es obligatorio
+                         # si agregamos una lista en vez de 'None' tendremos los predefinidos
+                         v: Optional[List[str]] = Query(None),
+                         comment_id: int = Path(..., gt=5, le=10)
+                         ):
+    return {
+        'blog': blog_detail,
+        'id': id,
+        'commentTitle': comment_title,
+        'content': content,
+        'version': v,
+        'commentId': comment_id
     }
