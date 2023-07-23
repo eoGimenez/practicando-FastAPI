@@ -3,12 +3,15 @@ from schemas.user import UserBase
 from models.user import DbUser
 from config.hash import Hash
 
+hasher = Hash()
+
 
 def create_user(db: Session, request: UserBase):
+
     new_user = DbUser(
         username=request.username,
         email=request.email,
-        password=Hash.bcrypt(Hash, password=request.password)
+        password=hasher.bcrypt(request.password)
     )
     db.add(new_user)
     db.commit()
@@ -29,7 +32,7 @@ def update_user(db: Session, id: int, request: UserBase):
     user.update({
         DbUser.username: request.username,
         DbUser.email: request.email,
-        DbUser.password: Hash.bcrypt(Hash, request.password)
+        DbUser.password: hasher.bcrypt(request.password)
     })
     db.commit()
     return 'Updated'
