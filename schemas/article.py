@@ -7,7 +7,7 @@ class Article(BaseModel):
     published: bool
 
     class Config():
-        from_atributes = True
+        from_attributes = True
 
 
 class User(BaseModel):
@@ -15,7 +15,7 @@ class User(BaseModel):
     username: str
 
     class Config():
-        from_atributes = True
+        from_attributes = True
 
 
 class ArticleBase(BaseModel):
@@ -32,4 +32,4 @@ class ArticleDisplay(BaseModel):
     user: User
 
     class Config():
-        from_atributes = True
+        from_attributes = True
