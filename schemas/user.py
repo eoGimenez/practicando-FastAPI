@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from typing import List
+from schemas.article import Article
 
 
 class UserBase(BaseModel):
@@ -10,6 +12,7 @@ class UserBase(BaseModel):
 class UserDisplay(BaseModel):
     username: str
     email: str
+    items: List[Article] = []
 
     class Config():
         from_attributes = True
