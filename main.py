@@ -4,9 +4,14 @@ from models.tables import Base
 from config.db import engine
 from exceptions.story import StoryException
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
+
+origins = [
+    'http://localhost:3000'
+]
 
 app.include_router(blog.router)
 app.include_router(user.router)
@@ -20,6 +25,14 @@ def story_exception_handlre(request: Request, exc: StoryException):
         status_code=418,
         content={'detail': exc.name}
     )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins= origins,
+    allow_credentials = True,
+    allow_methods = ['*'],
+    allow_headers = ['*']
+)
 
 
 Base.metadata.create_all(engine)

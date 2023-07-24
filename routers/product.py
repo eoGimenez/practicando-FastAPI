@@ -1,6 +1,6 @@
-from fastapi import APIRouter
+from typing import List
+from fastapi import APIRouter, Header, Cookie
 from fastapi.responses import Response, HTMLResponse, PlainTextResponse
-from typing import Optional
 
 # Custom response
 router = APIRouter(
@@ -15,13 +15,23 @@ products = ["Reloj", "TV", "Radio"]
 def get_products():
     # return products
     data = " ".join(products)
-    return Response(content=data, media_type="text/plain")
+    response = Response(content=data, media_type="text/plain")
+    response.set_cookie(key="test_cookie", value="test_cookie_value")
+    return response
 
 
-# @router.get('/withheader')
-# def get_products(response: Response,
-#                  custom_header: Optional
-#                  ):
+@router.get('/withheader')
+def get_product_header(response: Response,
+                custom_header: List[str] = Header(None),
+                test_cookie: str = Cookie(None)
+                ):
+    if custom_header:
+        response.headers['custom_response_headers'] = ", ".join(custom_header)
+    return {
+        'data': products,
+        'custom_header': custom_header,
+        'my_cookie': test_cookie
+    }
 
 
 @router.get('/{id}', responses={
