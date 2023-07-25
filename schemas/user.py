@@ -9,6 +9,11 @@ class UserBase(BaseModel):
     password: str
 
 
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+
 class UserDisplay(BaseModel):
     username: str
     email: str

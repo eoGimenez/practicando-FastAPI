@@ -1,14 +1,15 @@
 from fastapi import FastAPI, Request
-from routers import blog, user, article, product
-from auth import authentication
+from routers import blog, user, article, product, auth
 from models.tables import Base
 from config.db import engine
 from exceptions.story import StoryException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-
+from dotenv import load_dotenv
 
 app = FastAPI()
+
+load_dotenv()
 
 origins = [
     'http://localhost:3000'
@@ -18,7 +19,7 @@ app.include_router(blog.router)
 app.include_router(user.router)
 app.include_router(article.router)
 app.include_router(product.router)
-app.include_router(authentication.router)
+app.include_router(auth.router)
 
 
 @app.exception_handler(StoryException)

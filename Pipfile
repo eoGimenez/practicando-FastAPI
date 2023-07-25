@@ -10,8 +10,7 @@ sqlalchemy = "*"
 passlib = "*"
 bcrypt = "*"
 python-dotenv = "*"
-python-jose = "*"
-python-multipart = "*"
+pyjwt = "*"
 
 [dev-packages]
 
