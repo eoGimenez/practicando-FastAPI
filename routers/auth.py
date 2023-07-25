@@ -8,6 +8,8 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from config.db import get_db
 from models import tables
 from schemas.user import UserLogin, UserBase
+from dotenv import load_dotenv
+load_dotenv()
 
 router = APIRouter(
     tags=['authentication']
@@ -34,8 +36,7 @@ class AuthHandler():
         return jwt.encode(
             payload,
             self.secret,
-            algorithm='HS256'
-        )
+            algorithm="HS256")
 
     def decode_token(self, token):
         try:
@@ -57,7 +58,7 @@ auth_handler = AuthHandler()
 
 @router.post('/token')
 def get_token(request: UserLogin, db: Session = Depends(get_db)):
-    user: UserBase = db.query(tables.DbUser).filter(
+    user = db.query(tables.DbUser).filter(
         tables.DbUser.username == request.username).first()
     if not user:
         raise HTTPException(
