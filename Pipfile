@@ -11,6 +11,7 @@ passlib = "*"
 bcrypt = "*"
 python-dotenv = "*"
 pyjwt = "*"
+pydantic = "*"
 
 [dev-packages]
 

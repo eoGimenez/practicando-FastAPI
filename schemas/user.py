@@ -7,6 +7,7 @@ class UserBase(BaseModel):
     username: str
     email: str
     password: str
+    active: bool = True
 
 
 class UserLogin(BaseModel):

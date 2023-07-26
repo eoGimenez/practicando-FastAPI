@@ -5,11 +5,10 @@ from config.db import engine
 from exceptions.story import StoryException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
 
 app = FastAPI()
 
-load_dotenv()
+
 
 origins = [
     'http://localhost:3000'
