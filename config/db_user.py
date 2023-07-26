@@ -12,7 +12,8 @@ def create_user(db: Session, request: UserBase):
     new_user = DbUser(
         username=request.username,
         email=request.email,
-        password=hasher.bcrypt(request.password)
+        password=hasher.bcrypt(request.password),
+        active=request.active
     )
     db.add(new_user)
     db.commit()

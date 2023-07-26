@@ -13,12 +13,14 @@ class UserBase(BaseModel):
 class UserLogin(BaseModel):
     username: str
     password: str
+    activa: bool
 
 
 class UserDisplay(BaseModel):
     username: str
     email: str
     items: List[Article] = []
+    active: bool
 
     class Config():
         from_attributes = True

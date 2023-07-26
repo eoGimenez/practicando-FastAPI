@@ -90,7 +90,7 @@ async def get_current_user(
         token_data = TokenData(scopes=token_scopes, username=username)
     except (JWTError, ValidationError):
         raise credentials_exception
-    user = get_user(db, username=token_data.username)
+    user = get_user(token_data.username, db)
     if user is None:
         raise credentials_exception
     for scope in security_scopes.scopes:
@@ -107,6 +107,7 @@ async def get_current_active_user(
     current_user: Annotated[UserBase, Security(
         get_current_user, scopes=["me"])]
 ):
+    print(current_user.active)
     if not current_user.active:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
@@ -136,12 +137,15 @@ async def read_users_me(
     return current_user
 
 
-@router.get("/users/me/items/")
+@router.get("/users/me/articles/")
 async def read_own_items(
     current_user: Annotated[UserBase, Security(
-        get_current_active_user, scopes=["items"])]
+        get_current_active_user, scopes=["articles"])]
 ):
-    return [{"item_id": "Foo", "owner": current_user.username}]
+    items = []
+    for item in current_user.items:
+        items.append(item)
+    return items
 
 
 @router.get("/status/")
