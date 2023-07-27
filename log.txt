@@ -1,0 +1,6 @@
+API: Estamos probando el log
+	http://127.0.0.1:8000/dependencies/?separator=%2F%2F%2F%2F%2F%2F%2F%2F%2F&tag=API&message=Estamos%20probando%20el%20log
+API: segundo test
+	http://127.0.0.1:8000/dependencies/?separator=-&tag=API&message=segundo%20test
+API: segundo test
+	http://127.0.0.1:8000/dependencies/?tag=API&message=segundo%20test
