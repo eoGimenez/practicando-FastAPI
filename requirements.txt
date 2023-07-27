@@ -4,4 +4,7 @@ sqlalchemy
 passlib
 bcrypt
 python-dotenv
-pyjwt
+python-multipart
+python-jose
+requests
+pytest

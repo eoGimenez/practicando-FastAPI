@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request
-from routers import blog, user, article, product, auth
+from routers import blog, user, article, product, auth, file, dependencies
 from models.tables import Base
 from config.db import engine
 from exceptions.story import StoryException
@@ -13,11 +13,13 @@ origins = [
     'http://localhost:3000'
 ]
 
+app.include_router(dependencies.router)
 app.include_router(blog.router)
 app.include_router(user.router)
 app.include_router(article.router)
 app.include_router(product.router)
 app.include_router(auth.router)
+app.include_router(file.router)
 
 
 @app.exception_handler(StoryException)
